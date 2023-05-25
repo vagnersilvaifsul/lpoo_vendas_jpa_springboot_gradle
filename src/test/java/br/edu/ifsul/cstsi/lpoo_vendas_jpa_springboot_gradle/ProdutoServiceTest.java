@@ -2,21 +2,12 @@ package br.edu.ifsul.cstsi.lpoo_vendas_jpa_springboot_gradle;
 
 import br.edu.ifsul.cstsi.lpoo_vendas_jpa_springboot_gradle.produtos.Produto;
 import br.edu.ifsul.cstsi.lpoo_vendas_jpa_springboot_gradle.produtos.ProdutoService;
-import org.hibernate.ObjectNotFoundException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.math.BigDecimal;
 import java.util.List;
-
 import static junit.framework.TestCase.*;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProdutoServiceTest {
 
@@ -50,6 +41,7 @@ public class ProdutoServiceTest {
         assertEquals(1, service.getProdutosByNome("Feijão").size());
     }
 
+    @Test
     public void getProdudosBySituacaoTest(){
         assertEquals(4, service.getProdudosBySituacao(true).size());
     }
@@ -80,19 +72,14 @@ public class ProdutoServiceTest {
         //compara os valores inseridos com os valores pesquisados para confirmar
         assertEquals("Teste", p.getNome());
         assertEquals("Desc. do produto Teste", p.getDescricao());
-        assertEquals(new BigDecimal("10.00"), p.getValor());
-        assertEquals(Long.valueOf(100), p.getEstoque());
+        assertEquals(10.00, p.getValor());
+        assertEquals(Integer.valueOf(100), p.getEstoque());
         assertEquals(Boolean.TRUE, p.getSituacao());
 
         // Deletar o objeto
         service.delete(id);
         //Verificar se deletou
-        try {
-            service.getProdutoById(id);
-            fail("O produto não foi excluído");
-        } catch (ObjectNotFoundException e) {
-            // OK
-        }
+        assertNull(service.getProdutoById(id));
     }
 
     @Test
@@ -136,11 +123,6 @@ public class ProdutoServiceTest {
         // Deletar o objeto
         service.delete(id);
         //Verificar se deletou
-        try {
-            service.getProdutoById(id);
-            fail("O produto não foi excluído");
-        } catch (ObjectNotFoundException e) {
-            // OK
-        }
+        assertNull(service.getProdutoById(id));
     }
 }
